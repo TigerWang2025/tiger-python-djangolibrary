@@ -1,0 +1,48 @@
+{% extends 'books/base.html' %}
+{% block content %}
+    <!-- 欢迎区域 -->
+    <section class="hero-section">
+        <div class="container">
+            <h1 class="display-4">欢迎体验图书借阅系统</h1>
+            <p class="lead">欢迎并借阅你所喜欢的图书，随时随地管理你的阅读。</p>
+        </div>
+    </section>
+
+
+    <section class="py-5">
+        <div class="container">
+            <h2 class="mb-4">图书列表</h2>
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert {% if message.tags == 'success'  %} alert-success {% else %} alert-danger {% endif %} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+            <div class="row row-cols-1 row-cols-md-3 g-4">
+                {% for book in books %}
+                <div class="col">
+                    <div class="card h-100">
+                        <img src="{{ book.cover.url }}" class="card-img-top" alt="{{ book.title }}" style="height: 200px;object-fit: cover; ">
+                        <div class="card-body">
+                            <h5 class="cart-title">{{ book.title }}</h5>
+                            <p class="card-text">作者：{{ book.author }}</p>
+                            <p class="card-text">
+                                状态：
+                                {% if book.is_available %}
+                                    <span class="badge bg-success">可借</span>
+                                {% else %}
+                                    <span class="badge bg-danger">已借出</span>
+                                {% endif %}
+                            </p>
+                            <a href="{% url 'book_detail' book.id %}" class="btn btn-primary">查看详情</a>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+{% endblock %}

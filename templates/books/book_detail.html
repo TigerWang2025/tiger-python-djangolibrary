@@ -1,0 +1,43 @@
+{% extends 'books/base.html' %}
+{% block content %}
+
+    <section class="py-5">
+        <div class="container">
+            <h2 class="mb-4">{{ book.title }}</h2>
+            <div class="card" style="max-width: 500px; ">
+                <img src="{{ book.cover.url }}" class="card-img-top" alt="{{ book.title }}" style="height: 200px;object-fit: cover; ">
+                <div class="card-body">
+                    <h5 class="cart-title">图书信息</h5>
+                    <p class="card-text"><strong>作者：</strong> {{ book.author }} </p>
+                    <p class="card-text">
+                        <strong>状态：</strong>
+                        {% if book.is_available %}
+                        <span class="badge bg-success">可借</span>
+                        {% else %}
+                        <span class="badge bg-danger">已借出</span>
+                        {% endif %}
+                    </p>
+                    {% if user.is_authenticated %}
+                        {% if book.is_available %}
+                            <a href="{% url 'borrow_book' book.id %} " class="btn btn-success mt-3">申请借阅</a>
+                        {% else %}
+                            <button class="btn btn-success mt-3" disabled="disable">申请借阅</button>
+                        {% endif %}
+                    {% else %}
+<!--                        <a href="{% url 'login' %} "   这种写法，在登录后，会调整到首页/列表页，应该是在详情，登录后跳转到当前页-->
+<!--                           class="btn btn-success mt-3">-->
+<!--                            登录后再借阅-->
+<!--                        </a>-->
+                            <!-- {{request.path}} 获取当前路径 -->
+                            <a href="{% url 'login' %}?next={{request.path}} "
+                           class="btn btn-success mt-3">
+                            登录后再借阅
+                            </a>
+                    {% endif %}
+                    <a href="{% url 'book_list' %}" class="btn btn-outline-secondary mt-3">返回列表</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+{% endblock %}

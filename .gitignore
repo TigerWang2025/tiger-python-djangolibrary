@@ -1,0 +1,27 @@
+# ######该文件的默认路径是在 [.idea] 目录下#######
+# 默认忽略的文件
+# /shelf/  # 默认未注释
+# /workspace.xml  # 默认未注释
+# 基于编辑器的 HTTP 客户端请求
+# /httpRequests/  # 默认未注释
+# Datasource local storage ignored files
+# /dataSources/  # 默认未注释
+# /dataSources.local.xml  # 默认未注释
+
+.venv/
+.idea/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+.pytest_cache/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.log

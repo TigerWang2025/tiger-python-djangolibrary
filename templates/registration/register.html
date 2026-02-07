@@ -1,0 +1,95 @@
+{% extends "books/base.html" %}
+
+{% block content %}
+
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-6 col-lg-4">
+                <div class="card shadow-sm border-0">
+                    <div class="card-body p-4">
+                        <h2 class="card-title text-center mb-4 fw-bold">用户注册</h2>
+{#                        <!--错误提示-->#}
+{#                        {% if form.errors %}#}
+{#                            <div class="alert alert-danger" role="alert">#}
+{#                                {{ form.errors }}#}
+{#                            </div>#}
+{#                        {% endif %}#}
+                        <!--注册表单-->
+                        <form method = "post" novalidate>
+                            {% csrf_token %}
+                            <!-- 显示非字段错误 -->
+                            {% if form.non_field_errors %}
+                                <div class="alert alert-danger" role="alert">
+                                    {{ form.non_field_errors }}
+                                </div>
+                            {% endif %}
+                            <!--用户名字段-->
+                            <div class="mb-3">
+                                <label for="{{ form.username.id_for_label }}" class="form-label fw-medium">
+                                    {{ form.username.label }}
+                                </label>
+                                <input type="text"
+                                       name="{{ form.username.name }}"
+                                       id="{{ form.username.id_for_label }}"
+                                       class="form-control {% if form.username.errors %}is-invalid{% endif %}"
+                                       placeholder="{{ form.username.help_text }}"
+                                       value="{% if form.username.value %}{{ form.username.value }}{% endif %}"
+                                >
+                                {% if form.username.errors %}
+                                    <div class="invalid-feedback">
+                                        {{ form.username.errors }}
+                                    </div>
+                                {% endif %}
+                            </div>
+
+                            <!-- 密码字段 -->
+                            <div class="mb-3" >
+                                <label for="{{ form.password1.id_for_label }}" class="form-label fw-medium">
+                                    {{ form.password1.label }}
+                                </label>
+                                <input type="password"
+                                       name="{{ form.password1.name }}"
+                                       id="{{ form.password1.id_for_label }}"
+                                       class="form-control {% if form.password1.errors %}is-invalid{% endif %}"
+                                       placeholder="{{ form.password1.help_text }}"
+                                >
+                                {% if form.password1.errors %}
+                                    <div class="invalid-feedback">
+                                        {{ form.password1.errors }}
+                                    </div>
+                                {% endif %}
+                            </div>
+
+                            <!-- 确认密码字段 -->
+                            <div class="mb-3">
+                                <label for="{{ form.password2.id_for_label }}" class="form-label fw-medium">
+                                    {{ form.password2.label }}
+                                </label>
+                                <input type="password"
+                                       name="{{ form.password2.name }}"
+                                       id="{{ form.password2.id_for_label }}"
+                                       class="form-control {% if form.password2.errors %}is-invalid{% endif %}"
+                                       placeholder="{{ form.password2.help_text }}"
+                                >
+                                {% if form.password2.errors %}
+                                    <div class="invalid-feedback">
+                                        {{ form.password2.errors }}
+                                    </div>
+                                {% endif %}
+                            </div>
+                            <button type="submit" class="btn btn-primary w-100 py-2">注册</button>
+                        </form>
+
+                        <!-- 登录 -->
+                        <p class="text-center mt-3 text-muted">
+                            已有账号？<a href="/accounts/login" class="text-primary text-decoration-none">立即登录</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}
