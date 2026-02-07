@@ -35,3 +35,7 @@
 
 添加管理员账户：
 python manage.py createsuperuser
+
+测试账户
+Andy    tiger1234
+tiger   Andy1234
