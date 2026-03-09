@@ -39,3 +39,8 @@ python manage.py createsuperuser
 测试账户
 Andy    tiger1234
 tiger   Andy1234
+
+
+管理员切换密码：
+(.venv) PS D:\CodeSpace\tiger-python-djangolibrary> python manage.py changepassword admin
+输入两次密码即可，要求8位数以上，且不常见

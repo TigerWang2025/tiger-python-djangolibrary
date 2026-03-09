@@ -14,16 +14,19 @@
                         <form method="post" novalidate="">
                             {% csrf_token %}
 <!--                            <input type="hidden" name="csrfmiddlewaretoken" value="M9UpTjWhjddKAslJjXaSEngvKsDia2xAB081GbVeD3FeKd6RnKW0RrugaY5Exut3">-->
-                            <div class="md-3">
+                            <div class="mb-3">
                                 <label for="" class="form-label fw-medium">用户名</label>
                                 <input type="text" name="username" id="" class="form-control" placeholder="请输入用户名" value="">
                             </div>
-                            <div class="md-3">
+                            <div class="mb-3">
                                 <label for="" class="form-label fw-medium">密码</label>
                                 <input type="password" name="password" id="" class="form-control" placeholder="请输入密码">
                             </div>
                             <button type="submit" class="btn btn-primary w-100 py-2">登录</button>
                         </form>
+                        <div class="d-flex justify-content-end mt-2">
+                            <a href="/accounts/password_reset/" class="text-decoration-none">忘记密码？</a>
+                        </div>
                         <!--注册链接-->
                         <p class="text-center mt-3 text-muted">
                             还没有账号？<a href="/accounts/register/" class="text-primary text-decoration-none">立即注册</a>
