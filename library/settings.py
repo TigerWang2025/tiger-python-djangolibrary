@@ -146,3 +146,14 @@ MEDIA_ROOT = BASE_DIR / 'media'
 # 设置登录成功后的跳转
 LOGIN_REDIRECT_URL = '/'  # 回到首页
 LOGOUT_REDIRECT_URL = '/'  # 回到首页
+
+# 配置邮箱服务器
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  # 由控制台打印
+# ## 以下是真实邮箱配置 ####
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+# EMAIL_HOST = 'smtp.qq.com'          # QQ邮箱服务器
+# EMAIL_PORT = 465                    # SSL端口通常是465，TLS是587
+# EMAIL_HOST_USER = '你的QQ号@qq.com'   # 你的邮箱账号
+# EMAIL_HOST_PASSWORD = '你的授权码'    # 注意：这里是授权码，不是QQ登录密码！
+# EMAIL_USE_SSL = True                # QQ邮箱通常需要开启SSL
+# DEFAULT_FROM_EMAIL = EMAIL_HOST_USER

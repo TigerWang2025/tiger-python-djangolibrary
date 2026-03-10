@@ -23,5 +23,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('books.urls')),
     path('accounts/', include('accounts.urls')),
-    path('accounts/', include('django.contrib.auth.urls')),#登录相关路由
+    path('accounts/', include('django.contrib.auth.urls')),  # 登录相关路由
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

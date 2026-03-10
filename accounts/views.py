@@ -1,28 +1,40 @@
 from django.core.exceptions import ValidationError
-from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth import login, authenticate, logout
+from django.contrib.auth import login
 from django.contrib import messages
 from django.contrib.auth.models import User
+from django import forms
 
 
 class CustomerUserCreationForm(UserCreationForm):
+    # 显式添加 email 字段，因为默认 UserCreationForm 没有
+    email = forms.EmailField(
+        required=True,
+        label='邮箱',
+        help_text='必填。请输入有效的邮箱地址。',
+        error_messages={
+            'required': '邮箱不能为空',
+            'invalid': '请输入有效邮箱地址',
+        }
+    )
+
     class Meta:
         model = User
-        fields = ('username', 'password1', 'password2')
+        fields = ('username', 'email', 'password1', 'password2')
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         # 设置中文标签
-        self.fields['username'].lable = '用户名'
-        self.fields['password1'].lable = '密码'
-        self.fields['password2'].lable = '确认密码'
+        self.fields['username'].label = '用户名'
+        self.fields['password1'].label = '密码'
+        self.fields['password2'].label = '确认密码'
 
         # 自定义帮助文本
         self.fields['username'].help_text = '必填。150个字符或更少。只能包含字母、数字和 @/./+/-/_。'
         self.fields['password1'].help_text = ''
         self.fields['password2'].help_text = '为了确保安全，请输入与上面相同的密码。'
+        self.fields['email'].help_text = ''
 
         # 自定义错误规则
         self.fields['username'].error_message = {
@@ -44,6 +56,23 @@ class CustomerUserCreationForm(UserCreationForm):
             raise ValidationError('该用户名已经被占用')
         return username
 
+    def clean_email(self):
+        """验证邮箱唯一性"""
+        email = self.cleaned_data.get('email')
+        if not email:
+            raise ValidationError('邮箱地址不能为空')
+        if User.objects.filter(email=email).exists():
+            raise ValidationError('该邮箱地址已经被占用')
+        return email
+
+    # def save(self, commit=True):
+    #     """保存用户并设置邮箱"""
+    #     user = super().save(commit=False)
+    #     user.email = self.cleaned_data["email"]
+    #     if commit:
+    #         user.save()
+    #     return user
+
 
 # Create your views here.
 def register(request):
@@ -60,7 +89,8 @@ def register(request):
         else:
             # 表单验证失败，将错误信息传回模板
             # messages.error(request, form.errors)
-            messages.error(request, '注册失败，请检查下面的错误信息。')
+            pass
+            # messages.error(request, '注册失败，请检查下面的错误信息。')
     else:
         # GET 请求时创建空表单
         form = CustomerUserCreationForm()
