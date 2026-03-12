@@ -1,0 +1,44 @@
+# views.py 修改建议
+
+def register(request):
+    if request.method == 'POST':
+        form = CustomerUserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            messages.success(request, f'账户 {user.username} 创建成功！您现在已登录。')
+            return redirect('book_list')
+        else:
+            # 【修改点】：表单验证失败停留在当前页时，
+            # 通常不需要 messages.error，因为模板里会显示 form.errors。
+            # 如果你一定要显示全局提示，请确保 register.html 也能显示消息。
+            # 注释掉下面这行，避免错误消息残留到下一次跳转
+            # messages.error(request, '注册失败，请检查下面的错误信息。') 
+            pass 
+    else:
+        form = CustomerUserCreationForm()
+
+    return render(request, 'registration/register.html', {'form': form})
+
+def user_login(request):
+    if request.user.is_authenticated:
+        return redirect('book_list')
+
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        user = authenticate(request, username=username, password=password)
+        
+        if user is not None:
+            login(request, user)
+            messages.success(request, f'欢迎回来，{user.username}！')
+            return redirect('book_list') # 跳转时携带成功消息，这是对的
+        else:
+            # 【修改点】：登录失败停留在当前页，建议只依赖 form errors 或局部提示
+            # 如果必须用 messages，请确保 login.html 里有显示消息的代码块
+            messages.error(request, '用户名或密码错误。')
+            # 注意：这里没有 redirect，而是 render，所以消息会在本次 render 中显示并清除
+            # 但如果逻辑写错变成了 redirect，消息就会带走。
+            
+    # 无论 GET 还是 POST 失败，都渲染登录页，此时消息会被消费掉
+    return render(request, 'registration/login.html') 
